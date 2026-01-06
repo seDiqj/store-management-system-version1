@@ -41,7 +41,6 @@ export default function RootLayout({
 
           {/* Main content (بعد از سایدبار) */}
           <div className="ml-64 min-h-screen flex flex-col">
-
             {/* Top Navbar */}
             <TopNavbar />
             {/* Page Content */}

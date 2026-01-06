@@ -1,7 +1,7 @@
 'use client';
 
 import { Bell, Settings, User, Store, Sun, Moon } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 
 export default function TopNavbar() {

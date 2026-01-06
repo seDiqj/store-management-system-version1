@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -12,53 +12,67 @@ import {
   Wallet,
   BarChart3,
   Users,
+  Bell,
+  Settings,
   ChevronLeft,
+  // ChevronDown,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/app/components/ui/tooltip";
+} from "@/components/ui/tooltip";
 
-const menuItems = [
+/* ---------------- Menu Config ---------------- */
+const menu = [
   { title: "Dashboard", icon: LayoutDashboard, href: "/" },
-  { title: "Inventory", icon: Package, href: "/inventory" },
-  { title: "Purchases", icon: Truck, href: "/purchases" },
   { title: "Sales", icon: ShoppingCart, href: "/sales" },
+  { title: "Customers", icon: Users, href: "/customers" },
+  { title: "Inventory", icon: Package, href: "/inventory" },
+  { title: "Purchase", icon: Truck, href: "/purchases" },
   { title: "Finance", icon: Wallet, href: "/finance" },
   { title: "Reports", icon: BarChart3, href: "/reports" },
   { title: "Users", icon: Users, href: "/users" },
+  { title: "Notifications", icon: Bell, href: "/notifications" },
+  { title: "Settings", icon: Settings, href: "/settings" },
 ];
 
+/* ---------------- Sidebar ---------------- */
 export default function Sidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
+  // const [openMenus, setOpenMenus] = useState<string[]>([]);
+  // const toggleMenu = (title: string) => {
+  //   setOpenMenus((prev) =>
+  //     prev.includes(title)
+  //       ? prev.filter((t) => t !== title)
+  //       : [...prev, title]
+  //   );
+  // };
+
   return (
     <aside
       className={cn(
-        "group fixed inset-y-0 left-0 z-40 flex flex-col",
+        "fixed inset-y-0 left-0 z-40 flex flex-col",
         "border-r bg-background/70 backdrop-blur-xl",
-        "transition-all duration-300 ease-in-out",
+        "transition-all duration-300",
         collapsed ? "w-20" : "w-64"
       )}
     >
       {/* Header */}
       <div className="flex h-16 items-center justify-between px-4">
         {!collapsed && (
-          <span className="text-sm font-semibold tracking-wide">
-            Business OS
-          </span>
+          <span className="text-sm font-semibold">Business OS</span>
         )}
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setCollapsed(!collapsed)}
-          className="rounded-full hover:bg-muted"
         >
           <ChevronLeft
             className={cn(
@@ -72,7 +86,7 @@ export default function Sidebar() {
       {/* Menu */}
       <TooltipProvider delayDuration={0}>
         <nav className="flex-1 px-2 space-y-1">
-          {menuItems.map((item) => {
+          {menu.map((item) => {
             const Icon = item.icon;
             const active = pathname === item.href;
 
@@ -80,30 +94,19 @@ export default function Sidebar() {
               <Link
                 href={item.href}
                 className={cn(
-                  "group relative flex items-center gap-3 rounded-xl px-3 py-2.5",
-                  "transition-all duration-200",
+                  "flex items-center gap-3 rounded-xl px-3 py-2.5",
                   active
                     ? "bg-primary/15 text-primary"
-                    : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                    : "text-muted-foreground hover:bg-muted"
                 )}
               >
-                {/* Active Glow */}
-                {active && (
-                  <span className="absolute inset-0 rounded-xl bg-primary/10 blur-md" />
-                )}
-
-                <Icon className="relative z-10 h-5 w-5" />
-
-                {!collapsed && (
-                  <span className="relative z-10 text-sm font-medium">
-                    {item.title}
-                  </span>
-                )}
+                <Icon className="h-5 w-5" />
+                {!collapsed && <span>{item.title}</span>}
               </Link>
             );
 
             return collapsed ? (
-              <Tooltip key={item.href}>
+              <Tooltip key={item.title}>
                 <TooltipTrigger asChild>
                   {content}
                 </TooltipTrigger>
@@ -112,7 +115,7 @@ export default function Sidebar() {
                 </TooltipContent>
               </Tooltip>
             ) : (
-              <div key={item.href}>{content}</div>
+              <div key={item.title}>{content}</div>
             );
           })}
         </nav>
@@ -120,7 +123,7 @@ export default function Sidebar() {
 
       {/* Footer */}
       <div className="px-4 py-3 text-xs text-muted-foreground">
-        {!collapsed && "v1.0 • SaaS Platform"}
+        {!collapsed && "v1.0 • ERP Platform"}
       </div>
     </aside>
   );
